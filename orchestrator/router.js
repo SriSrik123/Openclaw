@@ -9,6 +9,7 @@ import {
   listTasks,
 } from '../utils/task-store.js';
 import { emitUpdate } from '../utils/notifier.js';
+import { setAgentsSnapshot } from '../utils/state-writer.js';
 
 export class Router {
   constructor(options = {}) {
@@ -21,10 +22,22 @@ export class Router {
     };
 
     Object.values(this.agents).forEach((agent) => {
-      agent.on('update', (event) => emitUpdate({ source: 'agent', ...event }));
-      agent.on('spawnTask', (payload) => this.spawnFromAgent(agent, payload));
-      agent.on('heartbeat', (event) => emitUpdate({ source: 'heartbeat', ...event }));
+      agent.on('update', (event) => {
+        emitUpdate({ source: 'agent', ...event });
+        setAgentsSnapshot(this.describeAgents());
+      });
+      agent.on('spawnTask', (payload) => {
+        this.spawnFromAgent(agent, payload).catch((error) =>
+          console.error('[router] spawnTask error', error),
+        );
+      });
+      agent.on('heartbeat', (event) => {
+        emitUpdate({ source: 'heartbeat', ...event });
+        setAgentsSnapshot(this.describeAgents());
+      });
     });
+
+    setAgentsSnapshot(this.describeAgents());
   }
 
   describeAgents() {
@@ -45,6 +58,7 @@ export class Router {
       status: 'queued',
       message: `[LEAD] Routed ${task.summary} to ${agentKey}`,
     });
+    await setAgentsSnapshot(this.describeAgents());
     await this.dispatch(task, agentKey);
     return task;
   }

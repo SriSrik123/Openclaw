@@ -27,12 +27,11 @@ multi-agent/
 ├── orchestrator/
 │   ├── index.js                 # CLI enqueue entrypoint
 │   └── router.js                # task routing + message bus
-├── web/
-│   └── server.js                # Express server + SSE feed
 ├── public/
-│   ├── index.html               # Agent Control Room UI
-│   ├── app.js                   # frontend logic
-│   └── styles.css               # glassmorphic styling
+│   ├── index.html               # static Agent Control Room UI
+│   ├── app.js                   # frontend logic (polls state.json)
+│   ├── styles.css               # glassmorphic styling
+│   └── state.json               # auto-generated snapshot for UI
 ├── data/
 │   ├── tasks.json               # persisted tasks/graph
 │   └── dispatch.log             # human-readable event log
@@ -41,8 +40,8 @@ multi-agent/
 │   └── trello.json.example      # Trello credentials template
 ├── utils/
 │   ├── task-store.js            # read/write helpers
-│   ├── notifier.js              # piping updates back to Sri + UI
-│   └── event-bus.js             # shared emitter for UI/SSE
+│   ├── notifier.js              # piping updates + snapshot logging
+│   └── state-writer.js          # keeps public/state.json fresh
 └── README.md
 ```
 
@@ -50,8 +49,9 @@ multi-agent/
 
 1. `npm install`
 2. Add `config/trello.json` credentials (optional) + ensure Himalaya is configured locally.
-3. **Live UI:** `npm start` → <http://localhost:4173> shows agents, task queue, and live feed via Server Sent Events.
-4. **CLI enqueue:** `npm run cli "Task summary"`
-5. **Demo workload:** `npm run demo`
+3. **Run agents via CLI:**
+   - `npm run demo` – seed sample work
+   - `npm run cli "Task summary"` – enqueue your own request
+4. **Static dashboard:** open `public/index.html` directly or run `npm start` (serves `/public` via the `serve` CLI) to preview at <http://localhost:4173>. The page polls `public/state.json`, which the orchestrator keeps current automatically.
 
 Each specialist agent can later be swapped for a remote agent (e.g., coding-agent skill). The orchestrator only requires that agents expose `handleTask`, `heartbeat`, and `report` methods.

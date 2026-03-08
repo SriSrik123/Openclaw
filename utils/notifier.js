@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { eventBus } from './event-bus.js';
+import { appendEvent } from './state-writer.js';
 
 const { appendFile, ensureFile } = fs;
 const __filename = fileURLToPath(import.meta.url);
@@ -17,7 +17,7 @@ export async function emitUpdate(event) {
   const timestamp = new Date().toISOString();
   const payload = { timestamp, ...event };
   await logLine(JSON.stringify(payload));
-  eventBus.emit('update', payload);
+  await appendEvent(payload);
   const humanReadable = `[#${event.taskId ?? 'n/a'}][${event.agent}] ${event.message ?? event.status}`;
   console.log(humanReadable);
 }

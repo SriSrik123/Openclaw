@@ -3,16 +3,15 @@ const tasksContainer = document.getElementById('tasks');
 const feedContainer = document.getElementById('feed');
 const statusBadge = document.getElementById('connection-status');
 
-async function fetchJSON(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to load ${url}`);
+async function fetchState() {
+  const res = await fetch('state.json', { cache: 'no-store' });
+  if (!res.ok) throw new Error('Failed to load state.json');
   return res.json();
 }
 
 function renderAgents(agents = {}) {
   agentsContainer.innerHTML = Object.entries(agents)
-    .map(([key, agent]) => {
-      return `
+    .map(([key, agent]) => `
         <article class="agent-card">
           <h3>${agent.name}</h3>
           <small>${agent.role}</small>
@@ -22,8 +21,7 @@ function renderAgents(agents = {}) {
             <span>${agent.activeTasks} active</span>
           </div>
         </article>
-      `;
-    })
+      `)
     .join('');
 }
 
@@ -33,8 +31,8 @@ function renderTasks(tasks = []) {
     return;
   }
   tasksContainer.innerHTML = tasks
-    .map((task) => {
-      return `
+    .map(
+      (task) => `
         <article class="task">
           <strong>${task.summary}</strong>
           <div class="meta">
@@ -43,58 +41,41 @@ function renderTasks(tasks = []) {
             <span>Priority: ${task.priority ?? '—'}</span>
           </div>
         </article>
-      `;
-    })
+      `,
+    )
     .join('');
 }
 
-function addFeedEntry(event) {
-  const entry = document.createElement('div');
-  entry.className = 'feed-entry';
-  entry.innerHTML = `
-    <div><span class="agent">${event.agent}</span> · ${event.status}</div>
-    <div>${event.message ?? ''}</div>
-    <div class="time">${new Date(event.timestamp).toLocaleTimeString()}</div>
-  `;
-  feedContainer.appendChild(entry);
-  const max = 100;
-  while (feedContainer.children.length > max) {
-    feedContainer.removeChild(feedContainer.firstChild);
+function renderFeed(feed = []) {
+  feedContainer.innerHTML = feed
+    .slice()
+    .reverse()
+    .map(
+      (event) => `
+        <div class="feed-entry">
+          <div><span class="agent">${event.agent}</span> · ${event.status}</div>
+          <div>${event.message ?? ''}</div>
+          <div class="time">${new Date(event.timestamp).toLocaleTimeString()}</div>
+        </div>
+      `,
+    )
+    .join('');
+}
+
+async function refresh() {
+  try {
+    const state = await fetchState();
+    renderAgents(state.agents);
+    renderTasks(state.tasks);
+    renderFeed(state.feed);
+    statusBadge.textContent = `Updated ${new Date(state.updatedAt).toLocaleTimeString()}`;
+    statusBadge.style.background = '#1f4733';
+  } catch (error) {
+    console.error(error);
+    statusBadge.textContent = 'Error loading state';
+    statusBadge.style.background = '#472222';
   }
 }
 
-async function bootstrap() {
-  const [{ agents }, { tasks }] = await Promise.all([
-    fetchJSON('/api/agents'),
-    fetchJSON('/api/tasks'),
-  ]);
-  renderAgents(agents);
-  renderTasks(tasks);
-}
-
-function connectEvents() {
-  const source = new EventSource('/api/events');
-  source.onopen = () => {
-    statusBadge.textContent = 'Live';
-    statusBadge.style.background = '#1f4733';
-  };
-  source.onerror = () => {
-    statusBadge.textContent = 'Reconnecting…';
-    statusBadge.style.background = '#47331f';
-  };
-  source.onmessage = (event) => {
-    const payload = JSON.parse(event.data);
-    addFeedEntry(payload);
-    if (payload.status === 'queued' || payload.status === 'done' || payload.status === 'error') {
-      fetchJSON('/api/tasks').then(({ tasks }) => renderTasks(tasks));
-    }
-  };
-}
-
-bootstrap().catch((err) => {
-  console.error(err);
-  statusBadge.textContent = 'Error loading data';
-  statusBadge.style.background = '#472222';
-});
-
-connectEvents();
+refresh();
+setInterval(refresh, 4000);
