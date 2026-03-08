@@ -4,7 +4,7 @@
   "type": "module",
   "main": "orchestrator/index.js",
   "scripts": {
-    "start": "serve public -l 4173",
+    "start": "serve docs -l 4173",
     "cli": "node orchestrator/index.js",
     "demo": "node orchestrator/index.js demo"
   },

@@ -5,7 +5,7 @@ import { loadTasks } from './task-store.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const PUBLIC_STATE = path.resolve(__dirname, '..', 'public', 'state.json');
+const PUBLIC_STATE = path.resolve(__dirname, '..', 'docs', 'state.json');
 
 const feed = [];
 let agents = {};

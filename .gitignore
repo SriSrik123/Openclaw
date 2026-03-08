@@ -2,4 +2,4 @@ node_modules
 .DS_Store
 logs/
 data/dispatch.log
-public/state.json
+docs/state.json

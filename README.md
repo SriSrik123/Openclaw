@@ -27,7 +27,7 @@ multi-agent/
 ├── orchestrator/
 │   ├── index.js                 # CLI enqueue entrypoint
 │   └── router.js                # task routing + message bus
-├── public/
+├── docs/
 │   ├── index.html               # static Agent Control Room UI
 │   ├── app.js                   # frontend logic (polls state.json)
 │   ├── styles.css               # glassmorphic styling
@@ -41,7 +41,7 @@ multi-agent/
 ├── utils/
 │   ├── task-store.js            # read/write helpers
 │   ├── notifier.js              # piping updates + snapshot logging
-│   └── state-writer.js          # keeps public/state.json fresh
+│   └── state-writer.js          # keeps docs/state.json fresh
 └── README.md
 ```
 
@@ -52,6 +52,6 @@ multi-agent/
 3. **Run agents via CLI:**
    - `npm run demo` – seed sample work
    - `npm run cli "Task summary"` – enqueue your own request
-4. **Static dashboard:** open `public/index.html` directly or run `npm start` (serves `/public` via the `serve` CLI) to preview at <http://localhost:4173>. The page polls `public/state.json`, which the orchestrator keeps current automatically.
+4. **Static dashboard:** open `docs/index.html` directly or run `npm start` (serves `/docs` via the `serve` CLI) to preview at <http://localhost:4173>. The page polls `docs/state.json`, which the orchestrator keeps current automatically.
 
 Each specialist agent can later be swapped for a remote agent (e.g., coding-agent skill). The orchestrator only requires that agents expose `handleTask`, `heartbeat`, and `report` methods.
