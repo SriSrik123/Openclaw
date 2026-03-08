@@ -1,0 +1,320 @@
+{
+  "updatedAt": "2026-03-08T16:46:44.205Z",
+  "agents": {
+    "planner": {
+      "name": "planner",
+      "role": "planner",
+      "capabilities": [
+        "decompose",
+        "trello-sync",
+        "prioritize"
+      ],
+      "auto": true,
+      "activeTasks": 2
+    },
+    "coding": {
+      "name": "coding",
+      "role": "coding",
+      "capabilities": [
+        "repo-ops",
+        "tests",
+        "codex-hand-off"
+      ],
+      "auto": true,
+      "activeTasks": 1
+    },
+    "email": {
+      "name": "email",
+      "role": "email",
+      "capabilities": [
+        "triage",
+        "draft",
+        "send"
+      ],
+      "auto": true,
+      "activeTasks": 1
+    },
+    "ops": {
+      "name": "ops",
+      "role": "ops",
+      "capabilities": [
+        "scheduling",
+        "reminders",
+        "summaries"
+      ],
+      "auto": true,
+      "activeTasks": 1
+    }
+  },
+  "tasks": [
+    {
+      "id": "task-1",
+      "status": "assigned",
+      "createdAt": "2026-03-08T16:46:44.171Z",
+      "summary": "Build landing page update and email investors",
+      "priority": "high",
+      "origin": "demo",
+      "payload": {
+        "to": "investors@example.com",
+        "subject": "Product update"
+      },
+      "assignedTo": "planner"
+    },
+    {
+      "id": "task-2",
+      "status": "assigned",
+      "createdAt": "2026-03-08T16:46:44.179Z",
+      "parentId": "task-1",
+      "summary": "Draft/send email: Build landing page update and email investors",
+      "priority": "high",
+      "origin": "planner",
+      "payload": {
+        "to": "investors@example.com",
+        "subject": "Product update"
+      },
+      "assignedTo": "email"
+    },
+    {
+      "id": "task-3",
+      "status": "assigned",
+      "createdAt": "2026-03-08T16:46:44.180Z",
+      "parentId": "task-1",
+      "summary": "Code work: Build landing page update and email investors",
+      "priority": "high",
+      "origin": "planner",
+      "payload": {
+        "to": "investors@example.com",
+        "subject": "Product update"
+      },
+      "assignedTo": "coding"
+    },
+    {
+      "id": "task-4",
+      "status": "assigned",
+      "createdAt": "2026-03-08T16:46:44.181Z",
+      "summary": "Schedule onboarding call with ACME",
+      "priority": "medium",
+      "origin": "demo",
+      "payload": {
+        "to": "acme@example.com",
+        "subject": "Onboarding call"
+      },
+      "assignedTo": "planner"
+    },
+    {
+      "id": "task-5",
+      "status": "assigned",
+      "createdAt": "2026-03-08T16:46:44.198Z",
+      "parentId": "task-4",
+      "summary": "Ops follow-up: Schedule onboarding call with ACME",
+      "priority": "medium",
+      "origin": "planner",
+      "payload": {
+        "to": "acme@example.com",
+        "subject": "Onboarding call"
+      },
+      "assignedTo": "ops"
+    }
+  ],
+  "feed": [
+    {
+      "timestamp": "2026-03-08T16:46:44.173Z",
+      "source": "orchestrator",
+      "agent": "planner",
+      "taskId": "task-1",
+      "status": "queued",
+      "message": "[LEAD] Routed Build landing page update and email investors to planner"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.178Z",
+      "source": "agent",
+      "agent": "planner",
+      "taskId": "task-1",
+      "status": "planning",
+      "message": "[PLANNER] Decomposing “Build landing page update and email investors”"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.178Z",
+      "source": "agent",
+      "agent": "planner",
+      "role": "planner",
+      "taskId": "task-1",
+      "status": "done",
+      "result": {
+        "steps": [
+          {
+            "role": "email",
+            "summary": "Draft/send email: Build landing page update and email investors",
+            "priority": "high"
+          },
+          {
+            "role": "coding",
+            "summary": "Code work: Build landing page update and email investors",
+            "priority": "high"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.179Z",
+      "source": "orchestrator",
+      "agent": "email",
+      "taskId": "task-2",
+      "status": "queued",
+      "message": "[LEAD] Routed Draft/send email: Build landing page update and email investors to email"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.180Z",
+      "source": "orchestrator",
+      "agent": "coding",
+      "taskId": "task-3",
+      "status": "queued",
+      "message": "[LEAD] Routed Code work: Build landing page update and email investors to coding"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.182Z",
+      "source": "orchestrator",
+      "agent": "planner",
+      "taskId": "task-4",
+      "status": "queued",
+      "message": "[LEAD] Routed Schedule onboarding call with ACME to planner"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.188Z",
+      "source": "agent",
+      "agent": "email",
+      "taskId": "task-2",
+      "status": "drafting",
+      "message": "[EMAIL] Drafting email to investors@example.com"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.188Z",
+      "source": "agent",
+      "agent": "email",
+      "taskId": "task-2",
+      "status": "dry_run",
+      "message": "[EMAIL] Would run: himalaya --account sri-gmail compose --to \"investors@example.com\" --subject \"Product update\" --body \"Follow up: Draft/send email: Build landing page update and email investors\""
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.188Z",
+      "source": "agent",
+      "agent": "email",
+      "role": "email",
+      "taskId": "task-2",
+      "status": "done",
+      "result": {
+        "dryRun": true,
+        "command": "himalaya --account sri-gmail compose --to \"investors@example.com\" --subject \"Product update\" --body \"Follow up: Draft/send email: Build landing page update and email investors\""
+      }
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.188Z",
+      "source": "spawn",
+      "agent": "planner",
+      "taskId": "task-2",
+      "message": "[LEAD] planner spawned task-2 -> email"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.189Z",
+      "source": "agent",
+      "agent": "coding",
+      "taskId": "task-3",
+      "status": "queued",
+      "message": "[CODING] Preparing workspace for Code work: Build landing page update and email investors"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.189Z",
+      "source": "agent",
+      "agent": "coding",
+      "taskId": "task-3",
+      "status": "in_progress",
+      "message": "[CODING] Executing via coding-agent skill (stub)",
+      "details": "1. Checkout feature branch\n2. Run tests\n3. Implement change\n4. Commit and push for review"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.189Z",
+      "source": "agent",
+      "agent": "coding",
+      "role": "coding",
+      "taskId": "task-3",
+      "status": "done",
+      "result": {
+        "notes": "Coding agent stub completed (no-op)."
+      }
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.189Z",
+      "source": "spawn",
+      "agent": "planner",
+      "taskId": "task-3",
+      "message": "[LEAD] planner spawned task-3 -> coding"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.190Z",
+      "source": "agent",
+      "agent": "planner",
+      "taskId": "task-4",
+      "status": "planning",
+      "message": "[PLANNER] Decomposing “Schedule onboarding call with ACME”"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.190Z",
+      "source": "agent",
+      "agent": "planner",
+      "role": "planner",
+      "taskId": "task-4",
+      "status": "done",
+      "result": {
+        "steps": [
+          {
+            "role": "ops",
+            "summary": "Ops follow-up: Schedule onboarding call with ACME",
+            "priority": "medium"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.198Z",
+      "source": "orchestrator",
+      "agent": "ops",
+      "taskId": "task-5",
+      "status": "queued",
+      "message": "[LEAD] Routed Ops follow-up: Schedule onboarding call with ACME to ops"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.202Z",
+      "source": "agent",
+      "agent": "ops",
+      "taskId": "task-5",
+      "status": "in_progress",
+      "message": "[OPS] Handling logistics for Ops follow-up: Schedule onboarding call with ACME"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.202Z",
+      "source": "agent",
+      "agent": "ops",
+      "taskId": "task-5",
+      "status": "scheduled",
+      "message": "[OPS] Ops scheduled follow-up for Ops follow-up: Schedule onboarding call with ACME"
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.202Z",
+      "source": "agent",
+      "agent": "ops",
+      "role": "ops",
+      "taskId": "task-5",
+      "status": "done",
+      "result": {
+        "note": "Ops scheduled follow-up for Ops follow-up: Schedule onboarding call with ACME"
+      }
+    },
+    {
+      "timestamp": "2026-03-08T16:46:44.202Z",
+      "source": "spawn",
+      "agent": "planner",
+      "taskId": "task-5",
+      "message": "[LEAD] planner spawned task-5 -> ops"
+    }
+  ]
+}
