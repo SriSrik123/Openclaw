@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "status": "assigned",
+      "createdAt": "2026-03-08T16:11:10.234Z",
+      "parentId": "task-3",
+      "summary": "Ops follow-up: Schedule onboarding call with ACME",
+      "priority": "medium",
+      "origin": "planner",
+      "payload": {
+        "to": "acme@example.com",
+        "subject": "Onboarding call"
+      },
+      "assignedTo": "ops"
+    }
+  ],
+  "lastId": 1
+}

@@ -1,0 +1,10 @@
+{
+  "apiKey": "YOUR_KEY",
+  "token": "YOUR_TOKEN",
+  "boardId": "699b3fbc366027cfb98b957d",
+  "lists": {
+    "todo": "699b3fbd366027cfb98b95a1",
+    "doing": "699b3fbd366027cfb98b95a2",
+    "done": "699b3fbd366027cfb98b95a3"
+  }
+}

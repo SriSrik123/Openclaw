@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agent Control Room</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Agent Control Room</h1>
+        <p>Live status for Planner, Coding, Email, and Ops.</p>
+      </div>
+      <span class="badge" id="connection-status">Connecting…</span>
+    </header>
+
+    <main>
+      <section>
+        <h2>Agents</h2>
+        <div id="agents" class="grid"></div>
+      </section>
+
+      <section>
+        <h2>Task Queue</h2>
+        <div id="tasks" class="task-list"></div>
+      </section>
+
+      <section>
+        <h2>Live Feed</h2>
+        <div id="feed" class="feed"></div>
+      </section>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

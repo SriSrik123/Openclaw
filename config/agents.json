@@ -1,0 +1,18 @@
+{
+  "planner": {
+    "role": "planner",
+    "description": "Breaks goals into specialist subtasks and mirrors plan to Trello."
+  },
+  "coding": {
+    "role": "coding",
+    "description": "Executes engineering work via coding-agent skill or manual hooks."
+  },
+  "email": {
+    "role": "email",
+    "description": "Drafts and sends communication through Himalaya (sri-gmail)."
+  },
+  "ops": {
+    "role": "ops",
+    "description": "Scheduling, reminders, Trello/TODO sync, general logistics."
+  }
+}
